@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SubSubCategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +36,5 @@ Route::group(['middleware'=>'admin_auth','prefix'=>'admin'], function () {
     Route::get('dashboard',[AdminLoginController::class,'dashboard'])->name('admin.dashboard');
     Route::resource('category', CategoryController::class);
     Route::resource('sub-category', SubCategoryController::class);
+    Route::resource('sub-sub-category',SubSubCategoryController::class);
 });

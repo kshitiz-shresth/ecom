@@ -75,7 +75,7 @@
                                         <tbody>
                                         @foreach ($sub_categories as $item)
                                             <tr>
-                                                <td>{{ $item->name }}</td>
+                                                <td><a href="{{ route('sub-sub-category.index','sub_cat_id='.$item->id) }}">{{ $item->name }}</a></td>
                                                 <td>{{ $item->slug }}</td>
                                                 <td>
                                                     <a
