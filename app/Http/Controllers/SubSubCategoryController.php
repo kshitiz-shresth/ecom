@@ -43,7 +43,7 @@ class SubSubCategoryController extends Controller
     {
         SubSubCategory::create($request->all());
         if($request->submit){
-            return redirect(route('sub-category.index','sub_cat_id='.$request->sub_category_id));
+            return redirect(route('sub-sub-category.index','sub_cat_id='.$request->sub_category_id));
         }
         return redirect()->back();
     }
