@@ -3,22 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\SubCategory;
 use Exception;
 use Illuminate\Http\Request;
 
-class SubCategoryController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data['category'] = Category::find($request->cat_id);
-        $data['sub_categories'] = $data['category']  ? $data['category'] ->sub_categories : [];
-        return view('admin.pages.sub-category.browse',$data);
+        $data['categories'] = Category::orderBy('order')->get();
+        return view('admin.pages.category.browse',$data);
     }
 
     /**
@@ -26,10 +24,10 @@ class SubCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $data['category'] = Category::find($request->cat_id);
-        return view('admin.pages.sub-category.create',$data);
+        return view('admin.pages.category.create');
+
     }
 
     /**
@@ -40,11 +38,9 @@ class SubCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        SubCategory::create($request->all());
-        if($request->submit){
-            return redirect(route('sub-category.index','cat_id='.$request->category_id));
-        }
-        return redirect()->back();
+        Category::create($request->all());
+        $request->session()->flash('success','Successfully Created');
+        return redirect(route('category.index'));
     }
 
     /**
@@ -64,11 +60,10 @@ class SubCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,Request $request)
+    public function edit($id)
     {
-        $data['category'] = Category::find($request->cat_id);
-        $data['sub_category'] = SubCategory::find($id);
-        return view('admin.pages.sub-category.edit',$data);
+        $data['category'] = Category::find($id);
+        return view('admin.pages.category.edit',$data);
     }
 
     /**
@@ -81,14 +76,15 @@ class SubCategoryController extends Controller
     public function update(Request $request, $id)
     {
         try{
-            SubCategory::find($id)->update($request->all());
+            Category::find($id)->update($request->all());
             $request->session()->flash('success','Successfully Updated');
-            return redirect(route('sub-category.index','cat_id='.$request->category_id));
+            return redirect(route('category.index'));
         }
         catch(Exception $e){
             $request->session()->flash('error',$e->getMessage());
             return redirect()->back();
         }
+
     }
 
     /**
@@ -99,6 +95,26 @@ class SubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if(Category::find($id)->sub_categories->count()>0){
+            return response([
+                'type'=>'error',
+                'title'=> 'Oops...',
+                'text'=>'Cannot Proceed as this Category have other sub categories.'
+            ]);
+        }
+        $title = Category::find($id) ? Category::find($id)->name : '';
+        if(Category::find($id)->delete()){
+            return response([
+                'type' => 'success',
+                'title'=> 'Success!!',
+                'text' => $title ? $title.' category has been deleted successfully.' :'Successfully Deleted'
+            ]);
+        }
+        return response([
+            'type' => 'error',
+            'title'=> 'Error!!',
+            'text' => 'Failed'
+        ]);
+
     }
 }
