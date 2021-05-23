@@ -14,11 +14,12 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="page-title">
-                                <h4>Blank Page</h4>
+                                <h4>Create Items</h4>
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Morvin</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Pages</a></li>
-                                    <li class="breadcrumb-item active">Blank Page</li>
+                                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                    </li>
+                                    <li class="breadcrumb-item"><a href="{{ route('category.index') }}">Category</a></li>
+                                    <li class="breadcrumb-item active">Create Items</li>
                                 </ol>
                             </div>
                         </div>
@@ -40,7 +41,7 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="header-title">Add Category</h4>
+                                    <h4 class="header-title">Create Category</h4>
                                     <p class="card-title-desc">You can easily add category with slug from here.
                                     </p>
 
@@ -51,7 +52,7 @@
                                                 </strong></label>
                                             <div class="col-sm-4">
                                                 <input class="form-control" type="text" placeholder="Enter Category Name" name="name"
-                                                    id="name" autocomplete="off">
+                                                    id="name" autofocus="autofocus" autocomplete="off">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -79,11 +80,9 @@
     @endsection
 
     @section('script')
-        <script>
-            $('#name').on('input', function() {
-                var slug = $(this).val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-                $('#slug').val(slug)
-            })
-
-        </script>
+    <script>
+        $('#name').on('input', function() {
+              $('#slug').val(slugify($(this).val()));
+          })
+      </script>
     @endsection

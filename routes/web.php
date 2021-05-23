@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\AdminLoginController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\SubCategoryController;
-use App\Http\Controllers\SubSubCategoryController;
+use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\SubCategoryController;
+use App\Http\Controllers\Admin\SubSubCategoryController;
+use App\Http\Controllers\Front\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,7 +36,15 @@ Route::group(['prefix'=>'admin'],function(){
 
 Route::group(['middleware'=>'admin_auth','prefix'=>'admin'], function () {
     Route::get('dashboard',[AdminLoginController::class,'dashboard'])->name('admin.dashboard');
+    Route::post('order',[OrderController::class,'change'])->name('order.change');
     Route::resource('category', CategoryController::class);
     Route::resource('sub-category', SubCategoryController::class);
     Route::resource('sub-sub-category',SubSubCategoryController::class);
 });
+
+Route::group(['prefix'=>'category'],function(){
+    Route::get('/{category_slug}',[PageController::class,'showCategory'])->name('category');
+    Route::get('/{category_slug}/{sub_category_slug}',[PageController::class,'showSubCategory'])->name('category.subcategory');
+    Route::get('/{category_slug}/{sub_category_slug}/{sub_sub_category_slug}',[PageController::class,'showSubSubCategory'])->name('category.subcategory.subcategory');
+});
+

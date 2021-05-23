@@ -57,10 +57,7 @@
                                     <h4 class="header-title">Add Category</h4>
                                     <p class="card-title-desc">You can easily add category with slug from here.
                                     </p>
-                                    @if (session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @endif
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap"
+                                    <table id="datatable" label="Category" class="table table-bordered dt-responsive nowrap"
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr>
@@ -81,7 +78,7 @@
                                                     <td>
                                                         <a href="{{ route('category.edit', $item->id) }}"><i
                                                                 class="mdi mdi-square-edit-outline"></i></a>
-                                                        <a href="#" onclick="deleteCategory({{ $item->id }})"><i
+                                                        <a href="#" onclick="deleteCat('{{ route('category.destroy',$item->id) }}')"><i
                                                                 class="mdi mdi-delete"></i></a>
                                                     </td>
                                                 </tr>
@@ -126,28 +123,7 @@
         <script src="/assets/js/pages/datatables.init.js"></script>
 
         <script>
-            function deleteCategory(id) {
-                if (confirm('Are You Sure?')) {
-                    $.ajax({
-                        url: `/admin/category/${id}`,
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                        },
-                        type: 'delete',
-                        success: function(result) {
-                            Swal.fire({
-                                        icon: result.type,
-                                        title: result.title,
-                                        text: result.text,
-                                        })
-                            if(result.type=='success'){
-                                $(`#row${id}`).remove();
-                            }
-                        }
-                    });
-                }
-            }
-
+            @include('admin.pages.partials.order')
         </script>
 
     @endsection

@@ -1,13 +1,12 @@
 @extends('admin.layout.app')
 @section('style')
     <!-- DataTables -->
-    <link href="/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet"
-          type="text/css"/>
+    <link href="/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
 
     <!-- Responsive datatable examples -->
     <link href="/assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet"
-          type="text/css"/>
+        type="text/css" />
 @endsection
 @section('body')
     <!-- ============================================================== -->
@@ -36,7 +35,7 @@
                         <div class="col-sm-6">
                             <div class="float-end d-none d-sm-block">
                                 <a href="{{ route('sub-category.create', 'cat_id=' . request('cat_id')) }}"
-                                   class="btn btn-success"><i class="mdi mdi-plus"></i> New</a>
+                                    class="btn btn-success"><i class="mdi mdi-plus"></i> New</a>
                             </div>
                         </div>
                     </div>
@@ -58,33 +57,32 @@
                                     <h4 class="header-title">Add {{ $category->name }}'s Items</h4>
                                     <p class="card-title-desc">You can easily add sub-category with slug from here.
                                     </p>
-                                    @if (session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @endif
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap"
-                                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                    <table id="datatable" label="SubCategory"
+                                        class="table table-bordered dt-responsive nowrap"
+                                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Slug</th>
-                                            <th>Action</th>
-                                        </tr>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Slug</th>
+                                                <th>Action</th>
+                                            </tr>
                                         </thead>
 
 
                                         <tbody>
-                                        @foreach ($sub_categories as $item)
-                                            <tr>
-                                                <td><a href="{{ route('sub-sub-category.index','sub_cat_id='.$item->id) }}">{{ $item->name }}</a></td>
-                                                <td>{{ $item->slug }}</td>
-                                                <td>
-                                                    <a
-                                                        href="{{ route('sub-category.edit', $item->id) }}?cat_id={{ request('cat_id') }}"><i
-                                                            class="mdi mdi-square-edit-outline"></i></a>
-                                                    <a href="#"><i class="mdi mdi-delete"></i></a>
-                                                </td>
-                                            </tr>
-                                        @endforeach
+                                            @foreach ($sub_categories as $item)
+                                                <tr id="row{{ $item->id }}">
+                                                    <td><a
+                                                            href="{{ route('sub-sub-category.index', 'sub_cat_id=' . $item->id) }}">{{ $item->name }}</a>
+                                                    </td>
+                                                    <td>{{ $item->slug }}</td>
+                                                    <td>
+                                                        <a href="{{ route('sub-category.edit', $item->id) }}?cat_id={{ request('cat_id') }}"><i
+                                                                class="mdi mdi-square-edit-outline"></i></a>
+                                                        <a href="#"  onclick="deleteCat('{{ route('sub-category.destroy',$item->id) }}')"><i class="mdi mdi-delete"></i></a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
 
@@ -105,23 +103,27 @@
 
 
     @section('script')
+
         <!-- Required datatable js -->
-            <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-            <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
-            <!-- Buttons examples -->
-            <script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-            <script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
-            <script src="/assets/libs/jszip/jszip.min.js"></script>
-            <script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
-            <script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
-            <script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-            <script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-            <script src="/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
-            <!-- Responsive examples -->
-            <script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-            <script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
+        <script src="/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+        <script src="/assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="/assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+        <script src="/assets/libs/jszip/jszip.min.js"></script>
+        <script src="/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+        <script src="/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+        <script src="/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+        <script src="/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+        <script src="/assets/libs/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+        <!-- Responsive examples -->
+        <script src="/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="/assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js"></script>
 
-            <!-- Datatable init js -->
-            <script src="/assets/js/pages/datatables.init.js"></script>
+        <!-- Datatable init js -->
+        <script src="/assets/js/pages/datatables.init.js"></script>
+        <script>
+         @include('admin.pages.partials.order')
+        </script>
 
-@endsection
+    @endsection

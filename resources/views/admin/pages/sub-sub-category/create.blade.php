@@ -57,14 +57,14 @@
                                                 </strong></label>
                                             <div class="col-sm-4">
                                                 <input class="form-control" type="text" placeholder="Enter Category Name" name="name"
-                                                    id="name" autocomplete="off">
+                                                    id="name" autocomplete="off" autofocus="autofocus" value="{{ old('name') }}">
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <label for="slug" class="col-sm-1 col-form-label"><strong>Slug:
                                                 </strong></label>
                                             <div class="col-sm-4">
-                                                <input class="form-control" placeholder="Enter slug" name="slug" id="slug">
+                                                <input class="form-control" value="{{ old('slug') }}" placeholder="Enter slug" name="slug" id="slug">
                                             </div>
                                         </div>
                                         <input type="hidden" name="sub_category_id" value="{{ request('sub_cat_id') }}">
@@ -88,11 +88,9 @@
     @endsection
 
     @section('script')
-        <script>
-            $('#name').on('input', function() {
-                var slug = $(this).val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-                $('#slug').val(slug)
-            })
-
-        </script>
+    <script>
+        $('#name').on('input', function() {
+              $('#slug').val(slugify($(this).val()));
+          })
+      </script>
     @endsection

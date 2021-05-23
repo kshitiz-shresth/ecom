@@ -1,0 +1,6 @@
+@import "toastr";
+
+
+.myDragClass{
+    box-shadow: rgb(177 177 177) 0px 4px 3px;
+}

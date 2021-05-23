@@ -14,7 +14,7 @@
                     <div class="row align-items-center">
                         <div class="col-sm-6">
                             <div class="page-title">
-                                <h4>Blank Page</h4>
+                                <h4>Update Items</h4>
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                                     <li class="breadcrumb-item"><a href="{{ route('category.index') }}">Category</a></li>
@@ -82,11 +82,9 @@
     @endsection
 
     @section('script')
-        <script>
-            $('#name').on('input', function() {
-                var slug = $(this).val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-                $('#slug').val(slug)
-            })
-
-        </script>
+    <script>
+        $('#name').on('input', function() {
+              $('#slug').val(slugify($(this).val()));
+          })
+    </script>
     @endsection

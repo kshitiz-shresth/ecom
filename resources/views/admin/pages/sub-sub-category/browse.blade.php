@@ -60,10 +60,8 @@
                                     <h4 class="header-title">Add {{ $sub_category->name }}'s Items</h4>
                                     <p class="card-title-desc">You can easily add sub-category with slug from here.
                                     </p>
-                                    @if (session('success'))
-                                        <div class="alert alert-success">{{ session('success') }}</div>
-                                    @endif
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap"
+
+                                    <table id="datatable" label="SubSubCategory" class="table table-bordered dt-responsive nowrap"
                                         style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                             <tr>
@@ -72,18 +70,16 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-
-
                                         <tbody>
                                             @foreach ($sub_sub_categories as $item)
-                                            <tr>
+                                            <tr id="row{{ $item->id }}">
                                                 <td>{{ $item->name }}</td>
                                                 <td>{{ $item->slug }}</td>
                                                 <td>
                                                     <a
                                                         href="{{ route('sub-sub-category.edit', $item->id) }}?sub_cat_id={{ request('sub_cat_id') }}"><i
                                                             class="mdi mdi-square-edit-outline"></i></a>
-                                                    <a href="#"><i class="mdi mdi-delete"></i></a>
+                                                    <a href="#" onclick="deleteCat('{{ route('sub-sub-category.destroy',$item->id) }}')"><i class="mdi mdi-delete"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -125,5 +121,7 @@
 
         <!-- Datatable init js -->
         <script src="/assets/js/pages/datatables.init.js"></script>
-
+        <script>
+            @include('admin.pages.partials.order')
+        </script>
     @endsection

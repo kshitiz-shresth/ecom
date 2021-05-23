@@ -10,6 +10,6 @@ class Category extends Model
     use HasFactory;
     protected $fillable = ['name','slug'];
     public function sub_categories(){
-        return $this->hasMany(SubCategory::class,'category_id');
+        return $this->hasMany(SubCategory::class,'category_id')->orderBy('order')->orderBy('created_at','desc');
     }
 }

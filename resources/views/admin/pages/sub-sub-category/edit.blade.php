@@ -88,11 +88,9 @@
     @endsection
 
     @section('script')
-        <script>
-            $('#name').on('input', function() {
-                var slug = $(this).val().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-                $('#slug').val(slug)
-            })
-
-        </script>
+    <script>
+        $('#name').on('input', function() {
+              $('#slug').val(slugify($(this).val()));
+          })
+      </script>
     @endsection

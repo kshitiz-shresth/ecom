@@ -1,10 +1,10 @@
 <?php
-
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data['categories'] = Category::orderBy('order')->get();
+        $data['categories'] = Category::orderBy('order')->orderBy('created_at','desc')->get();
         return view('admin.pages.category.browse',$data);
     }
 
@@ -95,18 +95,20 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        $title = Category::find($id) ? Category::find($id)->name : '';
+
         if(Category::find($id)->sub_categories->count()>0){
             return response([
                 'type'=>'error',
                 'title'=> 'Oops...',
-                'text'=>'Cannot Proceed as this Category have other sub categories.'
+                'text'=>"{$title} contains other items. Please clear all to delete."
             ]);
         }
-        $title = Category::find($id) ? Category::find($id)->name : '';
         if(Category::find($id)->delete()){
             return response([
                 'type' => 'success',
                 'title'=> 'Success!!',
+                'id' => $id,
                 'text' => $title ? $title.' category has been deleted successfully.' :'Successfully Deleted'
             ]);
         }

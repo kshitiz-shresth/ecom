@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
 use App\Models\SubCategory;
 use Exception;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SubCategoryController extends Controller
 {
@@ -105,6 +106,27 @@ class SubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $title = SubCategory::find($id) ? SubCategory::find($id)->name : '';
+
+        if(SubCategory::find($id)->sub_sub_categories->count()>0){
+            return response([
+                'type'=>'error',
+                'title'=> 'Oops...',
+                'text'=>"{$title} contains other sub items. Please clear it to delete."
+            ]);
+        }
+        if(SubCategory::find($id)->delete()){
+            return response([
+                'type' => 'success',
+                'title'=> 'Success!!',
+                'id' => $id,
+                'text' => $title ? $title.' has been deleted successfully.' : 'Successfully Deleted'
+            ]);
+        }
+        return response([
+            'type' => 'error',
+            'title'=> 'Error!!',
+            'text' => 'Failed'
+        ]);
     }
 }

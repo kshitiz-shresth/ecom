@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\SubCategory;
 use App\Models\SubSubCategory;
 use Exception;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class SubSubCategoryController extends Controller
@@ -106,6 +107,14 @@ class SubSubCategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $title = SubSubCategory::find($id) ? SubSubCategory::find($id)->name : '';
+        if(SubSubCategory::find($id)->delete()){
+            return response([
+                'type' => 'success',
+                'title'=> 'Success!!',
+                'id' => $id,
+                'text' => $title ? $title.'  has been deleted successfully.' :'Successfully Deleted'
+            ]);
+        }
     }
 }
